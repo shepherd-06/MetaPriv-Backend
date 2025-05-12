@@ -36,6 +36,17 @@ def home():
     return "App is running"
 
 
+@app.route('/status', methods=['GET'])
+def status():
+    """
+    Health check endpoint.
+    If the app is running, it returns a 200 OK status with an empty body.
+    Returns:
+        _type_: _description_
+    """
+    return '', 200  # empty body, HTTP 200
+
+
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(fetch_bp, url_prefix='/fetch')
 app.register_blueprint(sync_bp, url_prefix='/sync')
