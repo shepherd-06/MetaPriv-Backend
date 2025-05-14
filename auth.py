@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required
 import sqlite3
 import bcrypt
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -41,3 +43,14 @@ def login():
             return jsonify(message='Incorrect password'), 401
     else:
         return jsonify(message='Incorrect Password'), 404
+
+
+@auth_bp.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    try:
+        user_app_id = get_jwt_identity()
+        new_access_token = create_access_token(identity=user_app_id)
+        return jsonify(access_token=new_access_token), 200
+    except Exception as e:
+        return jsonify(message='Failed to refresh token', error=str(e)), 500

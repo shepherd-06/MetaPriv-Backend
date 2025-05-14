@@ -20,12 +20,11 @@ def fetch_active_pages():
         cursor.execute('''
             SELECT p.page_url
             FROM pages p
-            JOIN keywords k ON p.keyword_id = k.app_id
-            WHERE k.user_id = ? AND k.is_active = 1
+            JOIN keywords k ON p.keyword_id = k.app_id AND p.is_liked = 1
+            WHERE k.user_id = ? AND k.is_active = 1 
         ''', (user_app_id,))
         rows = cursor.fetchall()
         conn.close()
-
         page_urls = [row[0] for row in rows]
 
         return jsonify(page_urls=page_urls), 200
