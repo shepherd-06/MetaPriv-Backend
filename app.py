@@ -5,9 +5,11 @@ from flask_jwt_extended import JWTManager
 from auth import auth_bp
 from fetch import fetch_bp
 from sync import sync_bp
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)  # Enable CORS for all routes
 # Replace with a secure secret!
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 jwt = JWTManager(app)

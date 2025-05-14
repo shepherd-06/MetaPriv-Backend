@@ -32,7 +32,10 @@ def login():
         if bcrypt.checkpw(password_bytes, stored_hashed_password):
             access_token = create_access_token(identity=app_id)
             refresh_token = create_refresh_token(identity=app_id)
-            return jsonify(user_id=app_id, access_token=access_token, refresh_token=refresh_token), 200
+            return jsonify(user_id=app_id,
+                           access_token=access_token,
+                           refresh_token=refresh_token,
+                           username=username), 200
 
         else:
             return jsonify(message='Incorrect password'), 401
